@@ -3,45 +3,312 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>MySQL demo</title>
+  <title>Sakura Guruh Doskasi</title>
   <style>
-    body { font-family: system-ui, sans-serif; max-width: 480px; margin: 40px auto; padding: 0 16px; }
-    input { padding: 8px; width: 60%; }
-    button { padding: 8px 14px; }
-    li { margin: 6px 0; }
-    small { color: #666; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(rgba(25, 14, 32, 0.48), rgba(25, 14, 32, 0.58)),
+                  url('https://images.unsplash.com/photo-1522383225653-ed111181a951?q=80&w=2076&auto=format&fit=crop') no-repeat center center fixed;
+      background-size: cover;
+      color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* Chap menyu */
+    .sidebar {
+      width: 240px;
+      background: rgba(32, 18, 44, 0.68);
+      backdrop-filter: blur(15px);
+      border-right: 1px solid rgba(255, 183, 197, 0.25);
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: 700;
+      color: #ffc2d1;
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+      color: #ffffff;
+      border: none;
+      padding: 11px 16px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(255, 117, 140, 0.35);
+      transition: transform 0.2s, opacity 0.2s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      opacity: 0.96;
+    }
+
+    .menu-item {
+      padding: 11px 14px;
+      border-radius: 10px;
+      font-size: 14px;
+      color: #f4dce3;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .menu-item:hover, .menu-item.active {
+      background: rgba(255, 183, 197, 0.2);
+      color: #ffffff;
+      border: 1px solid rgba(255, 183, 197, 0.3);
+    }
+
+    /* Asosiy qism */
+    .main {
+      flex: 1;
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 28px 32px;
+    }
+
+    .header-card {
+      background: rgba(34, 20, 46, 0.72);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 183, 197, 0.3);
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin-bottom: 20px;
+    }
+
+    .header-card h1 {
+      font-size: 22px;
+      margin-bottom: 14px;
+      color: #ffe5ec;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    input[type="text"], .search-box {
+      flex: 1;
+      min-width: 220px;
+      padding: 11px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 183, 197, 0.35);
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      font-size: 14px;
+      outline: none;
+    }
+
+    input::placeholder, .search-box::placeholder {
+      color: #e2c2cd;
+    }
+
+    .search-wrap {
+      margin-bottom: 18px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .search-box {
+      background: rgba(32, 18, 44, 0.68);
+      backdrop-filter: blur(12px);
+    }
+
+    /* Xabarlar ro'yxati */
+    .notes-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .note-card {
+      background: rgba(32, 18, 44, 0.74);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 183, 197, 0.28);
+      border-radius: 14px;
+      padding: 16px 20px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .note-card:hover {
+      transform: translateY(-2px);
+      border-color: #ffb7c5;
+    }
+
+    .note-text {
+      font-size: 16px;
+      font-weight: 500;
+      color: #ffffff;
+      margin-bottom: 6px;
+      word-break: break-word;
+    }
+
+    .note-text span {
+      color: #ff8fa3;
+      font-weight: 700;
+      margin-right: 6px;
+    }
+
+    .note-meta {
+      font-size: 12px;
+      color: #dfc2cc;
+    }
+
+    .empty-msg {
+      text-align: center;
+      padding: 24px;
+      background: rgba(32, 18, 44, 0.65);
+      border-radius: 12px;
+      color: #f0d6de;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        flex-direction: row;
+        align-items: center;
+        overflow-x: auto;
+        padding: 14px;
+      }
+      .logo {
+        margin-bottom: 0;
+        white-space: nowrap;
+      }
+      .main {
+        padding: 18px 16px;
+      }
+    }
   </style>
 </head>
 <body>
-  <h1>Ismingizni qoldiring</h1>
-  <input id="name" placeholder="Ism" maxlength="100">
-  <button onclick="add()">Saqlash</button>
-  <ul id="list"></ul>
+
+  <aside class="sidebar">
+    <div class="logo">🌸 Sakura Doska</div>
+    <button class="btn-primary" onclick="focusInput()">+ Yangi Xabar</button>
+    <div class="menu-item active" onclick="resetSearch()">Barcha xabarlar</div>
+    <div class="menu-item" onclick="focusInput()">Xabar / Kod yozish</div>
+  </aside>
+
+  <main class="main">
+    <section class="header-card">
+      <h1>Ismingiz va xabaringizni qoldiring</h1>
+      <div class="form-row">
+        <input id="name" type="text" placeholder="Masalan: Ali — Salom, qalaysan?" maxlength="100" onkeydown="if(event.key==='Enter') add()">
+        <button class="btn-primary" id="saveBtn" onclick="add()">Saqlash</button>
+      </div>
+    </section>
+
+    <div class="search-wrap">
+      <input id="search" class="search-box" type="text" placeholder="Xabarlar ichidan qidirish..." oninput="renderFiltered()">
+    </div>
+
+    <ul id="list" class="notes-list"></ul>
+  </main>
 
 <script>
 const API = "/.netlify/functions/api";
+let allRows = [];
 
-async function load() {
-  const rows = await (await fetch(API)).json();
+function focusInput() {
+  const el = document.getElementById("name");
+  el.focus();
+  el.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+function resetSearch() {
+  document.getElementById("search").value = "";
+  renderFiltered();
+}
+
+function renderFiltered() {
+  const q = document.getElementById("search").value.trim().toLowerCase();
   const ul = document.getElementById("list");
   ul.innerHTML = "";
-  rows.forEach(r => {
+
+  const filtered = q
+    ? allRows.filter(r => (r.name || "").toLowerCase().includes(q))
+    : allRows;
+
+  if (!filtered.length) {
     const li = document.createElement("li");
-    li.textContent = r.name + " ";
-    const s = document.createElement("small");
-    s.textContent = "(" + new Date(r.created_at).toLocaleString() + ")";
-    li.appendChild(s);
+    li.className = "empty-msg";
+    li.textContent = q ? "Qidiruv bo'yicha xabar topilmadi." : "Hozircha xabarlar yo'q. Birinchi bo'lib yozing!";
+    ul.appendChild(li);
+    return;
+  }
+
+  filtered.forEach(r => {
+    const li = document.createElement("li");
+    li.className = "note-card";
+
+    const textDiv = document.createElement("div");
+    textDiv.className = "note-text";
+    const plus = document.createElement("span");
+    plus.textContent = "+";
+    textDiv.appendChild(plus);
+    textDiv.appendChild(document.createTextNode(r.name));
+
+    const metaDiv = document.createElement("div");
+    metaDiv.className = "note-meta";
+    const dateStr = r.created_at ? new Date(r.created_at).toLocaleString() : "";
+    metaDiv.textContent = dateStr ? `🕒 ${dateStr}` : "";
+
+    li.appendChild(textDiv);
+    if (dateStr) li.appendChild(metaDiv);
     ul.appendChild(li);
   });
 }
 
+async function load() {
+  try {
+    const res = await fetch(API);
+    const rows = await res.json();
+    allRows = Array.isArray(rows) ? rows : [];
+    renderFiltered();
+  } catch (err) {
+    const ul = document.getElementById("list");
+    ul.innerHTML = '<li class="empty-msg">Bazadan ma\'lumot olishda xatolik yuz berdi.</li>';
+  }
+}
+
 async function add() {
   const input = document.getElementById("name");
+  const btn = document.getElementById("saveBtn");
   const name = input.value.trim();
   if (!name) return;
-  await fetch(API, { method: "POST", body: JSON.stringify({ name }) });
-  input.value = "";
-  load();
+
+  btn.disabled = true;
+  try {
+    await fetch(API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name })
+    });
+    input.value = "";
+    await load();
+  } finally {
+    btn.disabled = false;
+  }
 }
 
 load();
